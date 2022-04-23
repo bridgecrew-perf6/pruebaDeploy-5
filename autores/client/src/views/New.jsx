@@ -1,20 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import FormAuthor from '../components/FormAuthor'
 import { createAuthor } from '../services/apiAuthor';
 
 const New = () => {
-  const [author, setAuthor] = useState('');
+  const [author, setAuthor] = useState();
   const [errors, setErrors] = useState('');
+  const navigate = useNavigate();
   
-  const createAuthorSubmit = async (authorValue) => {
+  const createAuthorSubmit = (authorValue) => {
     setAuthor(authorValue);
-    const res = await createAuthor(author);
-    const errorArr = [];
-    for (const key of Object.keys(res)) { 
-      errorArr.push(res[key].message)
-    }
-    setErrors(errorArr);
+    crearUsuario();
   }
+  useEffect(() => {
+    crearUsuario();
+  }, [author])
+  const crearUsuario = async () => {
+    if(author){
+      const res = await createAuthor(author);
+      const errorArr = [];
+      for (const key of Object.keys(res)) { 
+        errorArr.push(res[key].message)
+      }
+      
+      
+      setErrors(errorArr);
+      if(res.status ===200){
+        navigate('/');
+      }
+    }
+    
+    
+  }
+  
+
   return (
     <div>
       <h2>Add a new author:</h2>

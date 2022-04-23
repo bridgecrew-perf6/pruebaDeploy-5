@@ -21,3 +21,8 @@ module.exports.editAuthorById = (req, res) => {
     .then(result => res.json({result}))
     .catch(err => res.status(500).json({err}));
 }
+module.exports.deleteAuthorById = (req, res) => {
+    Author.deleteOne({_id: req.params.id})
+    .then(result => res.json({result}))
+    .catch(err => res.status(500).json({err}));
+}

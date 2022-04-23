@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import FormAuthor from '../components/FormAuthor'
 import { editAuthorById, getAuthorById } from '../services/apiAuthor';
 
@@ -8,6 +8,7 @@ const Edit = () => {
   const [author, setAuthor] = useState();
   const [errors, setErrors] = useState('');
   const {id} = useParams();
+  const navigate = useNavigate();
 
   const editAuthor = async (author) => {
     const res = await editAuthorById(id, author);
@@ -16,12 +17,13 @@ const Edit = () => {
       errorArr.push(res[key].message)
     }
     setErrors(errorArr);
+    navigate('/');
   }
 
   const getAuthorApi= async (id) =>{
     const res = await getAuthorById(id);
     setAuthor(res.data);
-    console.log(res);
+    
   }
   useEffect(() => {
     getAuthorApi(id);

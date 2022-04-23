@@ -35,6 +35,14 @@ export const editAuthorById = async (id,author) => {
         return err.response.data.errors;
     }
 }
+export const deleteAuthorById = async (id) => {
+    try {
+        const res = await axios.delete(`/api/author/${id}/delete`);
+        return res;
+    } catch (err) {
+        return err.response.data.errors;
+    }
+}
 /* module.exports = {
     getAuthors,
     createAuthor,

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { getAuthors } from '../services/apiAuthor';
+import { deleteAuthorById, getAuthors } from '../services/apiAuthor';
 
 const Main = () => {
     const [authors, setAuthors] = useState();
     const getAllAuthors = async () => {
         const res = await getAuthors();
-        console.log(res);
         setAuthors(res);
     }
     const navigate = useNavigate();
@@ -15,6 +14,15 @@ const Main = () => {
     }, [])
     const editHandler = (id) => {
         navigate(`/edit/${id}`)
+    }
+    const deleteHandler = (id) => {
+        deleteAuthor(id);
+        setAuthors(authors.filter(author=>author._id !== id))
+    }
+    const deleteAuthor = async (id) => {
+        await deleteAuthorById(id);
+        
+
     }
   return (
     <div className='authors'>
@@ -37,7 +45,7 @@ const Main = () => {
                             return (
                                 <tr>
                                 <td>{author.name}</td>
-                                <td><button onClick={()=>editHandler(author._id)}> Edit </button> <button navigate='/edit'> Delete </button></td>
+                                <td><button onClick={()=>editHandler(author._id)}> Edit </button> <button onClick={()=>deleteHandler(author._id)}> Delete </button></td>
                                 </tr>
                             )
                         })
